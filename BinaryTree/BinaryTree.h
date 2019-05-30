@@ -5,14 +5,13 @@ template<typename T>
 class Btree {
 	Node<T>* root;
 	int size;
-	void add_helper(T el, Node<T>*& nodePtr);//PRIVATE METHOD!
+	void add_helper(T el, Node<T>*& nodePtr);
 	void print_helper(Node<T>* ptr);
 	bool search_helper(T el, Node<T>* ptr);
 	Node<T>* &search_ptr_helper(T el, Node<T>*ptr);
 public:
 	Btree();
 	void add(T el);
-	void del(T el);
 
 	void print();
 
@@ -46,26 +45,9 @@ inline void Btree<T>::add(T el)
 }
 
 template<typename T>
-inline void Btree<T>::del(T el)
-{
-	Node<T>*tmp = search_ptr(el);
-	if (tmp != 0)
-		search_ptr(el) = nullptr;
-	//delete search_ptr(el);
-
-	/*if(tmp->getPrevPtr()!=0)
-		if(el < tmp->getPrevPtr()->getEl())
-			tmp->getPrevPtr()->getLeftPtr()
-	if ( tmp != 0 && tmp!=root)
-			tmp;*/
-
-	size--;
-}
-
-template<typename T>
 inline void Btree<T>::add_helper(T el, Node<T>*& nodePtr)
 {
-	if (nodePtr == 0) {//RECURSION!!!
+	if (nodePtr == 0) {
 		nodePtr = new Node<T>(el);
 		size++;
 	}
@@ -81,8 +63,8 @@ inline void Btree<T>::add_helper(T el, Node<T>*& nodePtr)
 template<typename T>
 inline void Btree<T>::print_helper(Node<T>* ptr)
 {
-	static int t = 0;//STATIC!!! to see tree's structure, статик, потому что функция рекурсивная, т.е. каждый раз нужно оставаться на том же значении
-	t++;//счетчик для отcтупов
+	static int t = 0;
+	t++;
 	if (ptr->getLeftPtr() != 0) {
 		print_helper(ptr->getLeftPtr());
 	}
@@ -100,15 +82,14 @@ inline void Btree<T>::print_helper(Node<T>* ptr)
 template<typename T>
 inline void Btree<T>::print()
 {
-	//по возрастанию
 	if (root->getLeftPtr() != 0)
-		print_helper(root->getLeftPtr());//left part is less
+		print_helper(root->getLeftPtr());
 
 	if (root != 0)
-		cout << root->getEl() << endl;//root
+		cout << root->getEl() << endl;
 
 	if (root->getRightPtr() != 0)
-		print_helper(root->getRightPtr());//right part's elements are larger
+		print_helper(root->getRightPtr());
 }
 
 template<typename T>
@@ -123,8 +104,7 @@ inline bool Btree<T>::search_helper(T el, Node<T>* ptr)
 	if (ptr->getLeftPtr() != 0)
 		f = search_helper(el, ptr->getLeftPtr());
 
-	//если уже f стал true, то не нужно далее ничего искать!!!
-	if (f == false)//обязательное условие, иначе всегда будет по правой части ставить false, даже если в левой уже нашел true
+	if (f == false)
 		if (ptr->getRightPtr() != 0)
 			f = search_helper(el, ptr->getRightPtr());
 
@@ -139,10 +119,9 @@ inline bool Btree<T>::search(T el)
 		return true;
 
 	if (root->getLeftPtr() != 0)
-		f = search_helper(el, root->getLeftPtr()); //можно сразу вернуть другую функцию типа булиан!!!!!!!!!!!
+		f = search_helper(el, root->getLeftPtr());
 
-	//если уже f стал true, то не нужно далее ничего искать!!!
-	if (f == false)//обязательное условие, иначе всегда будет по правой части ставить false, даже если в левой уже нашел true
+	if (f == false)
 		if (root->getRightPtr() != 0)
 			f = search_helper(el, root->getRightPtr());
 
@@ -154,12 +133,12 @@ inline Node<T> *& Btree<T>::search_ptr(T el)
 {
 	Node<T>*tmp = 0;
 	if (el == root->getEl())
-		return root;//!
+		return root;
 
 	if (root->getLeftPtr() != 0)
-		tmp = search_ptr_helper(el, root->getLeftPtr()); //можно сразу вернуть указатель
+		tmp = search_ptr_helper(el, root->getLeftPtr());
 
-	if (tmp == 0)//обязательное условие
+	if (tmp == 0)
 		if (root->getRightPtr() != 0)
 			tmp = search_ptr_helper(el, root->getRightPtr());
 
@@ -177,8 +156,7 @@ inline Node<T>*& Btree<T>::search_ptr_helper(T el, Node<T>* ptr)
 	if (ptr->getLeftPtr() != 0)
 		tmp = search_ptr_helper(el, ptr->getLeftPtr());
 
-	//если уже f стал true, то не нужно далее ничего искать!!!
-	if (tmp == 0)//обязательное условие, иначе всегда будет по правой части ставить false, даже если в левой уже нашел true
+	if (tmp == 0)
 		if (ptr->getRightPtr() != 0)
 			tmp = search_ptr_helper(el, ptr->getRightPtr());
 

@@ -14,21 +14,22 @@ int main() {
 
 	t.print();
 
-	cout << endl;
-	cout << t.search(100) << endl;
-	cout << t.search(12) << endl;
+	//cout << endl;
+	//cout << t.search(100) << endl;
+	//cout << t.search(12) << endl;
 
-	cout << t.search(7) << endl;
-	cout << t.search(6) << endl;
-	cout << t.search(4) << endl;
-	cout << t.search(2) << endl;
-	cout << t.search(3) << endl;
-	cout << t.search(5) << endl;
+	//cout << t.search(7) << endl;
+	//cout << t.search(6) << endl;
+	//cout << t.search(4) << endl;
+	//cout << t.search(2) << endl;
+	//cout << t.search(3) << endl;
+	//cout << t.search(5) << endl;
 
-	cout << t.search(0) << endl;
-	cout << t.search(1) << endl;
+	//cout << t.search(0) << endl;
+	//cout << t.search(1) << endl;
 
 	cout << endl << endl;
+	//returning pointer
 	cout << t.search_ptr(100) << endl;
 	cout << t.search_ptr(12) << endl;
 
@@ -42,9 +43,7 @@ int main() {
 	cout << t.search_ptr(0) << endl;
 	cout << t.search_ptr(1) << endl;
 
-	t.del(7);
-	t.del(2);
-	t.print();
+	
 
 
 	system("pause");

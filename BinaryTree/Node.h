@@ -46,7 +46,7 @@ inline void Node<T>::setPrevPtr(Node<T>* ptr)
 }
 
 template<typename T>
-inline Node<T>* & Node<T>::getLeftPtr()//always twice Node<T>!!!!!!!!!!!
+inline Node<T>* & Node<T>::getLeftPtr()
 {
 	return leftPtr;
 }
