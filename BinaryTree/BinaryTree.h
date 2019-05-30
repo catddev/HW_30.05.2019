@@ -49,6 +49,7 @@ inline void Btree<T>::add(T el)
 //template<typename T>
 //inline void Btree<T>::del(T el)
 //{
+// if(search(el)){
 //	Node<T>*tmp = search_ptr(el);
 //	Node<T>*tmp2 = NULL;
 //
@@ -68,6 +69,9 @@ inline void Btree<T>::add(T el)
 //	delete tmp;
 //	tmp = tmp2;
 //	size--;
+//}
+//  else
+//		cout << No such an element at the Tree << endl;
 //}
 
 template<typename T>
