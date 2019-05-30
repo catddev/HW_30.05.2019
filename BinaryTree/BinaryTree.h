@@ -11,7 +11,9 @@ class Btree {
 	Node<T>* &search_ptr_helper(T el, Node<T>*ptr);
 public:
 	Btree();
+	//~BTree();
 	void add(T el);
+	//void del(T el);
 
 	void print();
 
@@ -43,6 +45,30 @@ inline void Btree<T>::add(T el)
 			add_helper(el, root->getRightPtr());
 	}
 }
+
+//template<typename T>
+//inline void Btree<T>::del(T el)
+//{
+//	Node<T>*tmp = search_ptr(el);
+//	Node<T>*tmp2 = NULL;
+//
+//	if (el < root->getEl()) {//left
+//		if (tmp->getRightPtr() != 0)
+//			tmp2 = tmp->getRightPtr();
+//		else if (tmp->getLeftPtr() != 0)
+//			tmp2 = tmp->getLeftPtr();
+//	}
+//	else {//right
+//		if (tmp->getLeftPtr() != 0)
+//			tmp2 = tmp->getLeftPtr();
+//		else if (tmp->getRightPtr() != 0)
+//			tmp2 = tmp->getRightPtr();
+//	}
+//
+//	delete tmp;
+//	tmp = tmp2;
+//	size--;
+//}
 
 template<typename T>
 inline void Btree<T>::add_helper(T el, Node<T>*& nodePtr)
@@ -149,17 +175,23 @@ template<typename T>
 inline Node<T>*& Btree<T>::search_ptr_helper(T el, Node<T>* ptr)
 {
 	Node<T>*tmp = 0;
+	//static int count = 0;
 	if (ptr != 0)
 		if (ptr->getEl() == el)
 			return ptr;
 
-	if (ptr->getLeftPtr() != 0)
+	if (ptr->getLeftPtr() != 0) {
 		tmp = search_ptr_helper(el, ptr->getLeftPtr());
+		//count++;
+	}
 
-	if (tmp == 0)
+	if (tmp == 0) {
 		if (ptr->getRightPtr() != 0)
 			tmp = search_ptr_helper(el, ptr->getRightPtr());
+		//count++;
+	}
 
+	//tmp->setIndex(count);
 	return tmp;
 }
 
