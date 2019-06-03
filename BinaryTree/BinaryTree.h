@@ -148,12 +148,17 @@ inline bool Btree<T>::search(T el)
 	if (el == root->getEl())
 		return true;
 
-	if (root->getLeftPtr() != 0)
+	if (el < root->getEl() && root->getLeftPtr() != 0)
 		f = search_helper(el, root->getLeftPtr());
 
-	if (f == false)
+	//first variant
+	/*if (f == false)
 		if (root->getRightPtr() != 0)
-			f = search_helper(el, root->getRightPtr());
+			f = search_helper(el, root->getRightPtr());*/
+
+	//OR:
+	else if (el >= root->getEl() && root->getRightPtr() != 0)
+		f = search_helper(el, root->getRightPtr());
 
 	return f;
 }
@@ -165,12 +170,17 @@ inline Node<T> *& Btree<T>::search_ptr(T el)
 	if (el == root->getEl())
 		return root;
 
-	if (root->getLeftPtr() != 0)
+	if (el < root->getEl() && root->getLeftPtr() != 0)
 		tmp = search_ptr_helper(el, root->getLeftPtr());
 
-	if (tmp == 0)
-		if (root->getRightPtr() != 0)
-			tmp = search_ptr_helper(el, root->getRightPtr());
+	//first variant
+	//if (tmp == 0)
+	//	if (root->getRightPtr() != 0)
+	//		tmp = search_ptr_helper(el, root->getRightPtr());
+
+	//OR:
+	else if (el >= root->getEl() && root->getRightPtr() != 0)
+		tmp = search_ptr_helper(el, root->getRightPtr());
 
 	return tmp;
 }
