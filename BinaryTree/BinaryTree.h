@@ -46,12 +46,28 @@ inline void Btree<T>::add(T el)
 	}
 }
 
+template<typename T>
+inline void Btree<T>::add_helper(T el, Node<T>*& nodePtr)
+{
+	if (nodePtr == 0) {
+		nodePtr = new Node<T>(el);
+		size++;
+	}
+
+	else {
+		if (el < nodePtr->getEl())
+			add_helper(el, nodePtr->getLeftPtr());
+		else
+			add_helper(el, nodePtr->getRightPtr());
+	}
+}
+
 //template<typename T>
 //inline void Btree<T>::del(T el)
 //{
 // if(search(el)){
 //	Node<T>*tmp = search_ptr(el);
-//	Node<T>*tmp2 = NULL;
+//	Node<T>*tmp2 = 0;
 //
 //	if (el < root->getEl()) {//left
 //		if (tmp->getRightPtr() != 0)
@@ -73,22 +89,6 @@ inline void Btree<T>::add(T el)
 //  else
 //		cout << No such an element at the Tree << endl;
 //}
-
-template<typename T>
-inline void Btree<T>::add_helper(T el, Node<T>*& nodePtr)
-{
-	if (nodePtr == 0) {
-		nodePtr = new Node<T>(el);
-		size++;
-	}
-
-	else {
-		if (el < nodePtr->getEl())
-			add_helper(el, nodePtr->getLeftPtr());
-		else
-			add_helper(el, nodePtr->getRightPtr());
-	}
-}
 
 template<typename T>
 inline void Btree<T>::print_helper(Node<T>* ptr)
@@ -179,23 +179,19 @@ template<typename T>
 inline Node<T>*& Btree<T>::search_ptr_helper(T el, Node<T>* ptr)
 {
 	Node<T>*tmp = 0;
-	//static int count = 0;
 	if (ptr != 0)
 		if (ptr->getEl() == el)
 			return ptr;
 
 	if (ptr->getLeftPtr() != 0) {
 		tmp = search_ptr_helper(el, ptr->getLeftPtr());
-		//count++;
 	}
 
 	if (tmp == 0) {
 		if (ptr->getRightPtr() != 0)
 			tmp = search_ptr_helper(el, ptr->getRightPtr());
-		//count++;
 	}
 
-	//tmp->setIndex(count);
 	return tmp;
 }
 
