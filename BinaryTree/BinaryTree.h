@@ -106,10 +106,10 @@ inline Node<T>*& Btree<T>::del_helper(Node<T>* ptr)
 	Node<T>*tmp = 0;
 	if (ptr->getLeftPtr() == 0) {
 		tmp = ptr;
-		if (ptr->getRightPtr() == 0)
+		//if (ptr->getRightPtr() == 0)
 			ptr = NULL;
-		else
-			ptr->getPrevPtr()->getLeftPtr() = ptr->getRightPtr();
+	/*	else
+			ptr->getPrevPtr()->getLeftPtr() = ptr->getRightPtr();*/
 		size--;
 	}
 
