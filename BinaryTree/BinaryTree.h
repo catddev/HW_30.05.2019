@@ -9,11 +9,12 @@ class Btree {
 	void print_helper(Node<T>* ptr);
 	bool search_helper(T el, Node<T>* ptr);
 	Node<T>* &search_ptr_helper(T el, Node<T>*ptr);
+	Node<T>* &del_helper(Node<T>* ptr);
 public:
 	Btree();
 	//~BTree();
 	void add(T el);
-	//void del(T el);
+	void del(T el);
 
 	void print();
 
@@ -62,33 +63,61 @@ inline void Btree<T>::add_helper(T el, Node<T>*& nodePtr)
 	}
 }
 
-//template<typename T>
-//inline void Btree<T>::del(T el)
-//{
-// if(search(el)){
-//	Node<T>*tmp = search_ptr(el);
-//	Node<T>*tmp2 = 0;
-//
-//	if (el < root->getEl()) {//left
-//		if (tmp->getRightPtr() != 0)
-//			tmp2 = tmp->getRightPtr();
-//		else if (tmp->getLeftPtr() != 0)
-//			tmp2 = tmp->getLeftPtr();
-//	}
-//	else {//right
-//		if (tmp->getLeftPtr() != 0)
-//			tmp2 = tmp->getLeftPtr();
-//		else if (tmp->getRightPtr() != 0)
-//			tmp2 = tmp->getRightPtr();
-//	}
-//
-//	delete tmp;
-//	tmp = tmp2;
-//	size--;
-//}
-//  else
-//		cout << No such an element at the Tree << endl;
-//}
+template<typename T>
+inline void Btree<T>::del(T el)
+{
+	Node<T>*tmp = 0;
+	if (search(el))
+		tmp = search_ptr(el);
+	else {
+		cout << "No such an element at the Tree" << endl;
+		return;
+	}
+
+	if (tmp->getLeftPtr() == 0 && tmp->getRightPtr() == 0) {
+		tmp = 0;
+		delete tmp;//? nullptr //NULL
+		size--;
+		return;
+	}
+	else if (tmp->getLeftPtr() != 0 && tmp->getRightPtr() != 0)
+		tmp = del_helper(tmp->getRightPtr());
+	else {
+		if (tmp->getEl() < root->getEl()) {
+			if (tmp->getRightPtr() == 0)
+				tmp->getPrevPtr()->getLeftPtr() = tmp->getLeftPtr();
+			else
+				tmp->getPrevPtr()->getLeftPtr() = tmp->getRightPtr();
+	}
+		else {
+			if (tmp->getRightPtr() == 0)
+				tmp->getPrevPtr()->getRightPtr() = tmp->getLeftPtr();
+			else
+				tmp->getPrevPtr()->getRightPtr() = tmp->getRightPtr();
+		}
+	tmp = NULL;
+	size--;
+	}
+		
+}
+template<typename T>
+inline Node<T>*& Btree<T>::del_helper(Node<T>* ptr)
+{
+	Node<T>*tmp = 0;
+	if (ptr->getLeftPtr() == 0) {
+		tmp = ptr;
+		if (ptr->getRightPtr() == 0)
+			ptr = NULL;
+		else
+			ptr->getPrevPtr()->getLeftPtr() = ptr->getRightPtr();
+		size--;
+	}
+
+	else 
+		del_helper(ptr->getLeftPtr());
+	
+	return tmp;
+}
 
 template<typename T>
 inline void Btree<T>::print_helper(Node<T>* ptr)
@@ -204,6 +233,8 @@ inline Node<T>*& Btree<T>::search_ptr_helper(T el, Node<T>* ptr)
 
 	return tmp;
 }
+
+
 
 template<typename T>
 inline int Btree<T>::getSize()

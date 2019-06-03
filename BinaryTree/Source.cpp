@@ -44,9 +44,9 @@ int main() {
 	cout << t.search_ptr(1) << endl;
 
 
-	//t.del(7);
-	//t.del(2);
-	//t.print();
+	t.del(7);
+	t.del(2);
+	t.print();
 
 
 	system("pause");
