@@ -10,6 +10,7 @@ class Node {
 	//Node*prevPtr;
 public:
 	Node<T>(T el);
+	//~Node();
 	void setLeftPtr(Node<T>*ptr);
 	void setRightPtr(Node<T>*ptr);
 	//void setPrevPtr(Node<T>*ptr);
@@ -24,6 +25,13 @@ inline Node<T>::Node(T el)
 {
 	this->el = el;
 }
+//
+//template<typename T>
+//inline Node<T>::~Node()
+//{
+//	delete leftPtr;
+//	delete rightPtr;
+//}
 
 template<typename T>
 inline void Node<T>::setLeftPtr(Node<T> * ptr)

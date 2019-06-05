@@ -32,6 +32,12 @@ inline Btree<T>::Btree()
 	size = 0;
 }
 
+//template<typename T>
+//inline Btree<T>::~BTree()
+//{
+//	delete root;
+//}
+
 template<typename T>
 inline void Btree<T>::add(T el)
 {
@@ -81,6 +87,8 @@ inline void Btree<T>::del(T el)
 
 		/*delete tmp->getLeftPtr();
 		delete tmp->getRightPtr();*/
+		//~tmp;
+		//delete search_ptr(el);
 		tmp = NULL;//delete tmp;//? nullptr //NULL
 		size--;
 		return;
@@ -134,7 +142,7 @@ inline Node<T>*& Btree<T>::del_helper2(Node<T>*& ptr1, Node<T>*& ptr2)
 
 	if (ptr1->getLeftPtr() == 0) {
 		tmp = ptr1;
-		ptr2 = NULL;//?
+		//ptr2 = NULL;//?
 	}
 	else
 		tmp = del_helper2(ptr1->getLeftPtr(), ptr2);
