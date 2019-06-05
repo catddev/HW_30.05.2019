@@ -43,7 +43,7 @@ int main() {
 	cout << t.search_ptr(0) << endl;
 	cout << t.search_ptr(1) << endl;
 
-	t.del(5);
+	t.del(3);
 	t.del(7);
 	t.del(2);
 	t.print();
