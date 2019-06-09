@@ -44,10 +44,10 @@ int main() {
 	cout << t.search_ptr(1) << endl;
 
 	//t.del(5);
-	t.del(7);
-	t.del(2);
+	//t.del(7);
+	//t.del(2);
 	t.print();
-
+	//t.~Btree(); //почему явный вызов деструктора конфликтует, т.е. является повторным после неявного?
 
 	system("pause");
 	return 0;

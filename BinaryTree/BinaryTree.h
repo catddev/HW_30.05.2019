@@ -9,11 +9,11 @@ class Btree {
 	void print_helper(Node<T>* ptr);
 	bool search_helper(T el, Node<T>* ptr);
 	Node<T>* &search_ptr_helper(T el, Node<T>*ptr);
-	Node<T>* &del_helper(T el, Node<T>*& ptr);//&&?
-	Node<T>* &del_helper2(Node<T>*& ptr1, Node<T>*& ptr2);
+	Node<T>* &del_helper(T el, Node<T>*& ptr);
+	Node<T>* &del_helper2(Node<T>*& ptr);
 public:
 	Btree();
-	//~BTree();
+	~Btree();
 	void add(T el);
 	void del(T el);
 
@@ -21,6 +21,7 @@ public:
 
 	bool search(T el);
 	Node<T>*& search_ptr(T el);
+	Node<T>& search_prevPtr(Node<T> ptr);
 	int getSize();
 
 };
@@ -32,11 +33,49 @@ inline Btree<T>::Btree()
 	size = 0;
 }
 
-//template<typename T>
-//inline Btree<T>::~BTree()
-//{
-//	delete root;
-//}
+template<typename T>
+inline Btree<T>::~Btree()//correct destructor?
+{
+	if (size != 0)
+	{
+		int counter = size;//or (size-1)??? not counting root
+		
+		while (counter > 0) {
+			Node<T>*ptr1l = root->getLeftPtr();
+			Node<T>*ptr1r = root->getLeftPtr();
+			Node<T>*ptr2l = root->getRightPtr();
+			Node<T>*ptr2r = root->getRightPtr();
+			while (true) {
+				if (ptr1l->getLeftPtr() == 0 && ptr1l->getRightPtr() == 0) {
+					ptr1l=0;
+					counter--;
+				}
+				if (ptr2l->getLeftPtr()==0 && ptr2l->getRightPtr()==0) {
+					ptr2l=0;
+					counter--;
+				}
+				if (ptr1r->getLeftPtr() == 0 && ptr1r->getRightPtr() == 0) {
+					ptr1r=0;
+					counter--;
+				}
+				if (ptr2r->getLeftPtr() == 0 && ptr2r->getRightPtr() == 0) {
+					ptr2r=0;
+					counter--;
+				}
+				if (ptr1l == 0 || ptr2l == 0 || ptr1r ==0 || ptr2r==0 )
+					break;
+				if(ptr1l->getLeftPtr()!=0) ptr1l = ptr1l->getLeftPtr();
+				if(ptr1r->getRightPtr()!=0) ptr1r = ptr1r->getRightPtr();
+				if(ptr2l->getLeftPtr()!=0) ptr2l = ptr2l->getLeftPtr();
+				if(ptr2r->getRightPtr()!=0) ptr2r = ptr2r->getRightPtr();
+			}
+		}
+		root->getLeftPtr()=0;
+		root->getRightPtr()=0;
+		
+		cout << "Destructor!" << endl;//why no pause?
+	}
+}
 
 template<typename T>
 inline void Btree<T>::add(T el)
@@ -77,6 +116,7 @@ inline void Btree<T>::del(T el)
 	Node<T>*tmp2 = 0;
 	if (search(el))
 		tmp = search_ptr(el);
+	//maybe another method search for previous el? then delete tmp2->getLeftPtr/RightPtr if == ptr
 	else {
 		cout << "No such an element at the Tree" << endl;
 		return;
@@ -89,14 +129,14 @@ inline void Btree<T>::del(T el)
 		delete tmp->getRightPtr();*/
 		//~tmp;
 		//delete search_ptr(el);
-		tmp = NULL;//delete tmp;//? nullptr //NULL
+		delete tmp;//? nullptr //NULL
 		size--;
 		return;
 	}
 	else if (tmp->getLeftPtr() != 0 && tmp->getRightPtr() != 0) {
-		
-		tmp = del_helper2(tmp->getRightPtr(), tmp);
-		
+
+		tmp = del_helper2(tmp->getRightPtr());
+
 		//указатели переставлять или замены достаточно?
 	}
 	else {
@@ -136,16 +176,16 @@ inline Node<T>*& Btree<T>::del_helper(T el, Node<T>*& ptr)
 }
 
 template<typename T>
-inline Node<T>*& Btree<T>::del_helper2(Node<T>*& ptr1, Node<T>*& ptr2)
+inline Node<T>*& Btree<T>::del_helper2(Node<T>*& ptr)
 {
 	Node<T>*tmp = 0;
 
-	if (ptr1->getLeftPtr() == 0) {
-		tmp = ptr1;
-		//ptr2 = NULL;//?
+	if (ptr->getLeftPtr() == 0) {
+		tmp = ptr;
+		//ptr = NULL;//?
 	}
 	else
-		tmp = del_helper2(ptr1->getLeftPtr(), ptr2);
+		tmp = del_helper2(ptr->getLeftPtr());
 
 	return tmp;
 }
@@ -265,7 +305,20 @@ inline Node<T>*& Btree<T>::search_ptr_helper(T el, Node<T>* ptr)
 	return tmp;
 }
 
+template<typename T>
+inline Node<T>& Btree<T>::search_prevPtr(Node<T> ptr)
+{
+	while (true) {
+		Node<T>*seek1 = root->getLeftPtr();
+		Node<T>*seek2 = root->getLeftPtr();
+		Node<T>*seek3 = root->getRightPtr();
+		Node<T>*seek4 = root->getRightPtr();
+		if (ptr || seek->getRightPtr() == ptr)
+			return seek1;
 
+	}
+
+}
 
 template<typename T>
 inline int Btree<T>::getSize()
