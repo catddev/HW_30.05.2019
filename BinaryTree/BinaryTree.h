@@ -109,6 +109,41 @@ inline void Btree<T>::add_helper(T el, Node<T>*& nodePtr)
 }
 
 template<typename T>
+inline Node<T>*& Btree<T>::search_prevPtr(T el, Node<T>* ptr)
+{
+	Node<T>*tmp = 0;
+
+	if (root->getLeftPtr()->getEl() == el || root->getRightPtr()->getEl() == el)
+		return root;
+
+	if (el < root->getEl() && root->getLeftPtr() != 0)
+		tmp = search_prevPtr_helper(root->getLeftPtr(), ptr);
+	else if (el >= root->getEl() && root->getRightPtr() != 0)
+		tmp = search_prevPtr_helper(root->getRightPtr(), ptr);
+
+	return tmp;
+
+}
+
+template<typename T>
+inline Node<T>*& Btree<T>::search_prevPtr_helper(Node<T>*cur_ptr, Node<T>* ptr)
+{
+	Node<T>*tmp = 0;
+	if (cur_ptr != 0)
+		if (cur_ptr->getLeftPtr() == ptr || cur_ptr->getRightPtr() == ptr)
+			return cur_ptr;
+
+	if (cur_ptr->getLeftPtr() != 0) {
+		tmp = search_prevPtr_helper(cur_ptr->getLeftPtr(), ptr);
+	}
+
+	if (tmp == 0) {
+		if (cur_ptr->getRightPtr() != 0)
+			tmp = search_prevPtr_helper(cur_ptr->getRightPtr(), ptr);
+	}
+}
+
+template<typename T>
 inline void Btree<T>::del(T el)
 {
 	Node<T>*tmp = 0;
@@ -124,9 +159,9 @@ inline void Btree<T>::del(T el)
 	}
 
 	if (tmp->getLeftPtr() == 0 && tmp->getRightPtr() == 0) {
-		if (tmp == root) {//??
-			tmp->getLeftPtr() = 0;
-			tmp->getRightPtr() = 0;
+		if (tmp == root) {
+			root = 0;//?
+			size--;
 			return;
 		}
 
@@ -140,6 +175,14 @@ inline void Btree<T>::del(T el)
 		Node<T>*newPtr = tmp->getRightPtr();
 		while (newPtr->getLeftPtr() != 0)
 			newPtr = newPtr->getLeftPtr();
+
+		if (tmp == root) {
+			newPtr->getLeftPtr() = root->getLeftPtr();
+			root = 0;
+			root = newPtr;//??
+			size--;
+			return;
+		}
 
 		if (newPtr->getRightPtr() != 0)
 			tmp->getRightPtr()->getLeftPtr() = newPtr->getRightPtr();
@@ -157,7 +200,20 @@ inline void Btree<T>::del(T el)
 		
 	}
 	else {
-		if (tmp_prev->getLeftPtr() == tmp)
+		if (tmp == root) {//?
+			if (tmp->getLeftPtr() != 0) {
+				root = tmp->getLeftPtr();
+				root->getLeftPtr() = 0;
+				root->getRightPtr() = 0;
+			}
+			else {
+				root = tmp->getRightPtr();
+				root->getLeftPtr() = 0;
+				root->getRightPtr() = 0;
+			}
+		}
+
+		else if (tmp_prev->getLeftPtr() == tmp)
 			if (tmp->getLeftPtr() != 0)
 				tmp_prev->getLeftPtr() = tmp->getLeftPtr();
 			else
@@ -171,7 +227,6 @@ inline void Btree<T>::del(T el)
 	}
 
 	size--;
-	//tmp = 0;//??
 }
 
 template<typename T>
@@ -287,43 +342,6 @@ inline Node<T>*& Btree<T>::search_ptr_helper(T el, Node<T>* ptr)
 	}
 
 	return tmp;
-}
-
-template<typename T>
-inline Node<T>*& Btree<T>::search_prevPtr(T el, Node<T>* ptr)
-{
-	Node<T>*tmp = 0;
-
-	if (root->getLeftPtr()->getEl() == el || root->getRightPtr()->getEl() == el)
-		return root;
-
-	if (el < root->getEl() && root->getLeftPtr() != 0)
-		tmp = search_prevPtr_helper(root->getLeftPtr(), ptr);
-	else if (el >= root->getEl() && root->getRightPtr() != 0)
-		tmp = search_prevPtr_helper(root->getRightPtr(), ptr);
-
-	return tmp;
-
-}
-
-template<typename T>
-inline Node<T>*& Btree<T>::search_prevPtr_helper(Node<T>*cur_ptr, Node<T>* ptr)
-{
-	Node<T>*tmp = 0;
-	if (cur_ptr != 0)
-		if (cur_ptr->getLeftPtr() == ptr || cur_ptr->getRightPtr() == ptr)
-			return cur_ptr;
-
-	if (cur_ptr->getLeftPtr() != 0) {
-		tmp = search_prevPtr_helper(cur_ptr->getLeftPtr(), ptr);
-	}
-
-	if (tmp == 0) {
-		if (cur_ptr->getRightPtr() != 0)
-			tmp = search_prevPtr_helper(cur_ptr->getRightPtr(), ptr);
-	}
-
-	//return tmp;
 }
 
 template<typename T>
