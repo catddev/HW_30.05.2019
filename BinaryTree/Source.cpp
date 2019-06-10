@@ -2,6 +2,7 @@
 
 int main() {
 
+	//there are no equal elements in binary tree!!!
 	Btree<int> t;
 	//t.add(1);//structure depends on root, because this btree is unbalanced
 	t.add(5);
@@ -44,8 +45,12 @@ int main() {
 	cout << t.search_ptr(1) << endl;
 
 	//t.del(5);
-	//t.del(7);
-	//t.del(2);
+	t.del(3);
+	t.del(2);
+	t.del(6);
+	t.del(4);
+	t.del(7);
+	t.del(5);
 	t.print();
 	//t.~Btree(); //почему явный вызов деструктора конфликтует, т.е. является повторным после неявного?
 
