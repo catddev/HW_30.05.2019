@@ -38,7 +38,7 @@ inline Btree<T>::~Btree()//correct destructor?
 	if (size != 0)
 	{
 		int counter = size;//or (size-1)??? not counting root
-		
+
 		while (counter > 0) {
 			Node<T>*ptr1l = root->getLeftPtr();
 			Node<T>*ptr1r = root->getLeftPtr();
@@ -46,32 +46,32 @@ inline Btree<T>::~Btree()//correct destructor?
 			Node<T>*ptr2r = root->getRightPtr();
 			while (true) {
 				if (ptr1l->getLeftPtr() == 0 && ptr1l->getRightPtr() == 0) {
-					ptr1l=0;
+					ptr1l = 0;
 					counter--;
 				}
-				if (ptr2l->getLeftPtr()==0 && ptr2l->getRightPtr()==0) {
-					ptr2l=0;
+				if (ptr2l->getLeftPtr() == 0 && ptr2l->getRightPtr() == 0) {
+					ptr2l = 0;
 					counter--;
 				}
 				if (ptr1r->getLeftPtr() == 0 && ptr1r->getRightPtr() == 0) {
-					ptr1r=0;
+					ptr1r = 0;
 					counter--;
 				}
 				if (ptr2r->getLeftPtr() == 0 && ptr2r->getRightPtr() == 0) {
-					ptr2r=0;
+					ptr2r = 0;
 					counter--;
 				}
-				if (ptr1l == 0 || ptr2l == 0 || ptr1r ==0 || ptr2r==0 )
+				if (ptr1l == 0 || ptr2l == 0 || ptr1r == 0 || ptr2r == 0)
 					break;
-				if(ptr1l->getLeftPtr()!=0) ptr1l = ptr1l->getLeftPtr();
-				if(ptr1r->getRightPtr()!=0) ptr1r = ptr1r->getRightPtr();
-				if(ptr2l->getLeftPtr()!=0) ptr2l = ptr2l->getLeftPtr();
-				if(ptr2r->getRightPtr()!=0) ptr2r = ptr2r->getRightPtr();
+				if (ptr1l->getLeftPtr() != 0) ptr1l = ptr1l->getLeftPtr();
+				if (ptr1r->getRightPtr() != 0) ptr1r = ptr1r->getRightPtr();
+				if (ptr2l->getLeftPtr() != 0) ptr2l = ptr2l->getLeftPtr();
+				if (ptr2r->getRightPtr() != 0) ptr2r = ptr2r->getRightPtr();
 			}
 		}
-		root->getLeftPtr()=0;
-		root->getRightPtr()=0;
-		
+		root->getLeftPtr() = 0;
+		root->getRightPtr() = 0;
+
 		cout << "Destructor!" << endl;//why no pause?
 	}
 }
@@ -113,7 +113,7 @@ inline Node<T>*& Btree<T>::search_prevPtr(T el, Node<T>* ptr)
 {
 	Node<T>*tmp = 0;
 
-	if (root->getLeftPtr()->getEl() == el || root->getRightPtr()->getEl() == el)
+	if (root->getLeftPtr() == ptr || root->getRightPtr() == ptr)
 		return root;
 
 	if (el < root->getEl() && root->getLeftPtr() != 0)
@@ -160,7 +160,7 @@ inline void Btree<T>::del(T el)
 
 	if (tmp->getLeftPtr() == 0 && tmp->getRightPtr() == 0) {
 		if (tmp == root) {
-			root = 0;//?
+			delete root;//root = 0 what is the difference?
 			size--;
 			return;
 		}
@@ -179,7 +179,7 @@ inline void Btree<T>::del(T el)
 		if (tmp == root) {
 			newPtr->getLeftPtr() = root->getLeftPtr();
 			root = 0;
-			root = newPtr;//??
+			root = newPtr;
 			size--;
 			return;
 		}
@@ -189,27 +189,25 @@ inline void Btree<T>::del(T el)
 
 		if (tmp_prev->getLeftPtr() == tmp)
 			tmp_prev->getLeftPtr() = newPtr;
-		
-		else 
+
+		else
 			tmp_prev->getRightPtr() = newPtr;
-		
+
 
 		newPtr->getLeftPtr() = tmp->getLeftPtr();
-		if(newPtr!=tmp->getRightPtr())
+		if (newPtr != tmp->getRightPtr())
 			newPtr->getRightPtr() = tmp->getRightPtr();
-		
+
 	}
 	else {
-		if (tmp == root) {//?
+		if (tmp == root) {
 			if (tmp->getLeftPtr() != 0) {
+				root = 0;
 				root = tmp->getLeftPtr();
-				root->getLeftPtr() = 0;
-				root->getRightPtr() = 0;
 			}
 			else {
+				root = 0;
 				root = tmp->getRightPtr();
-				root->getLeftPtr() = 0;
-				root->getRightPtr() = 0;
 			}
 		}
 
@@ -226,6 +224,7 @@ inline void Btree<T>::del(T el)
 				tmp_prev->getRightPtr() = tmp->getRightPtr();
 	}
 
+	delete tmp;// tmp=0 is incorrect???
 	size--;
 }
 
@@ -251,6 +250,10 @@ inline void Btree<T>::print_helper(Node<T>* ptr)
 template<typename T>
 inline void Btree<T>::print()
 {
+	if (size == 0) {
+		cout << "Empty Tree!" << endl;
+		return;
+	}
 	if (root->getLeftPtr() != 0)
 		print_helper(root->getLeftPtr());
 

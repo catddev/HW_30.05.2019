@@ -30,7 +30,7 @@ int main() {
 	cout << t.search(1) << endl;
 
 	cout << endl << endl;
-	//returning pointer
+	////returning pointer
 	cout << t.search_ptr(100) << endl;
 	cout << t.search_ptr(12) << endl;
 
@@ -44,13 +44,17 @@ int main() {
 	cout << t.search_ptr(0) << endl;
 	cout << t.search_ptr(1) << endl;
 
+	cout << endl << "DELETE" << endl;
 	//t.del(5);
 	t.del(3);
 	t.del(2);
 	t.del(6);
 	t.del(4);
-	t.del(7);//not returning prev???
+
 	t.del(5);
+	t.del(7);
+	//t.del(5);
+
 	t.print();
 	//t.~Btree(); //почему явный вызов деструктора конфликтует, т.е. является повторным после неявного?
 
